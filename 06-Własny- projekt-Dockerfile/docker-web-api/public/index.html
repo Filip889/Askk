@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <title>Docker Web App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="card">
+    <h1>🐳 Docker Web App</h1>
+    <p id="env">Ładowanie...</p>
+    <p id="time"></p>
+  </div>
+
+  <script>
+    fetch("/api/info")
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("env").innerText =
+          "Środowisko: " + data.environment;
+        document.getElementById("time").innerText =
+          "Czas serwera: " + data.time;
+      });
+  </script>
+</body>
+</html>
