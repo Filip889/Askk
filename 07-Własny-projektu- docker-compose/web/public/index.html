@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Notes App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="card">
+    <h1>📝 Notes App</h1>
+
+    <form id="form">
+      <input id="note" placeholder="Nowa notatka" required />
+      <button>Dodaj</button>
+    </form>
+
+    <ul id="notes"></ul>
+    <p id="views"></p>
+  </div>
+
+<script>
+async function load() {
+  const notes = await fetch("/api/notes").then(r => r.json());
+  document.getElementById("notes").innerHTML =
+    notes.map(n => `<li>${n.content}</li>`).join("");
+
+  const views = await fetch("/api/views").then(r => r.json());
+  document.getElementById("views").innerText =
+    "Liczba odwiedzin: " + views.views;
+}
+
+document.getElementById("form").onsubmit = async e => {
+  e.preventDefault();
+  await fetch("/api/notes", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ content: note.value })
+  });
+  note.value = "";
+  load();
+};
+
+load();
+</script>
+</body>
+</html>
